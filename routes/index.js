@@ -1,9 +1,11 @@
 const { Router } = require("express");
+const db = require("../db/queries.js");
 
 const indexRouter = Router();
 
 
-indexRouter.use("/", (req, res, next) => {
+indexRouter.use("/", async(req, res, next) => {
+
   res.render("index");
 });
 
