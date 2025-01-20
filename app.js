@@ -3,6 +3,7 @@ const path = require("path");
 const indexRouter = require("./routes/index.js");
 const session = require("express-session");
 const auth = require("./authentication/passport.js");
+const LocalStrategy = require("passport-local").Strategy;
 // const logInRouter = require("./routes/log-in.js");
 // const signUpRouter = require("./routes/sign-up.js");
 
@@ -27,6 +28,8 @@ app.use(session({
 // passport initialization
 app.use(auth.passport.session());
 app.use(express.urlencoded({ extended: true }));
+
+auth.passport.use(new LocalStrategy(auth.passAuthenticator));
 
 //define routes
 app.use("/", indexRouter);

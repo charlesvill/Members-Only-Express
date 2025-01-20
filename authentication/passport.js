@@ -1,5 +1,4 @@
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
 
@@ -23,7 +22,21 @@ async function passAuthenticator (username, password, done) {
   }
 }
 
+function serialize(user, done){
+  done(null, user.id);
+}
+
+async function deserialize(id, done) {
+  try {
+    const user = await db.selectUserbyUsername(id);
+
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
+}
+
 module.exports = {
   passport,
-
-}
+  passAuthenticator,
+};
