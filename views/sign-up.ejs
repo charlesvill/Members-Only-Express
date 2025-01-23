@@ -10,6 +10,7 @@
         <%- include('./partials/header')%>
     </header>
     <main>
+        <span><%= message ? message : "" %></span>
         <form action="/sign-up" method="POST">
             <label for="firstname">First Name</label>
             <input type="text" name="firstname">

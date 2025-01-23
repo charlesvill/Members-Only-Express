@@ -1,11 +1,12 @@
 const express = require("express");
 const path = require("path");
-const indexRouter = require("./routes/index.js");
 const session = require("express-session");
-const auth = require("./authentication/passport.js");
+const passport = require("passport")
 const LocalStrategy = require("passport-local").Strategy;
-// const logInRouter = require("./routes/log-in.js");
-// const signUpRouter = require("./routes/sign-up.js");
+
+const indexRouter = require("./routes/index.js");
+const signUpRouter = require("./routes/sign-up.js");
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,16 +26,54 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
 // passport initialization
-app.use(auth.passport.session());
+app.use(passport.session());
 app.use(express.urlencoded({ extended: true }));
 
-auth.passport.use(new LocalStrategy(auth.passAuthenticator));
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await db.selectUserbyUsername(username);
+      const match = await bcrypt.compare(password, user.password);
 
-//define routes
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
+
+      if (!match) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+
+      return done(null, user);
+
+    } catch (error) {
+      return done(error);
+    }
+  })
+)
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async(id, done) => {
+  try {
+    const user = db.selectUserbyId(id);
+
+    done(null, user.id);
+  } catch (error) {
+    done(error);
+  }
+});
+
+
+app.use("/sign-up", signUpRouter);
+app.use("/log-in", (req, res) =>{
+  console.log("attempting to route to log in");
+  res.send("this is the log-in route");
+});
 app.use("/", indexRouter);
-// app.use("/login", logInRouter);
-// app.use("/signup", signUpRouter);
 app.use((req, res, next) => {
   res.status(404).send("404: not found!");
 });
@@ -42,3 +81,4 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+

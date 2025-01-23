@@ -4,13 +4,12 @@ const db = require("../db/queries.js");
 const indexRouter = Router();
 
 
-indexRouter.use("/", async(req, res, next) => {
-
-  if(!req.user){
-    res.redirect("/log-in");
+indexRouter.use("/", (req, res, next) => {
+  if (!req.user) {
+    res.render("log-in", {message: req.session.messages});
+  } else {
+    res.render("index");
   }
-  // look into passing messages when doing redirects
-  res.render("index");
 });
 
 
