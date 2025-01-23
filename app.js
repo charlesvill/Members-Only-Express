@@ -6,6 +6,7 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const indexRouter = require("./routes/index.js");
 const signUpRouter = require("./routes/sign-up.js");
+const logInRouter = require("./routes/log-in.js");
 
 
 const app = express();
@@ -69,11 +70,11 @@ passport.deserializeUser(async(id, done) => {
 
 
 app.use("/sign-up", signUpRouter);
-app.use("/log-in", (req, res) =>{
-  console.log("attempting to route to log in");
-  res.send("this is the log-in route");
-});
+
+app.use("/log-in", logInRouter);
+
 app.use("/", indexRouter);
+
 app.use((req, res, next) => {
   res.status(404).send("404: not found!");
 });

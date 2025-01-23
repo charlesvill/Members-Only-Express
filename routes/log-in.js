@@ -1,26 +1,22 @@
 const { Router } = require("express");
 const logInRouter = Router();
-const auth = require("../app.js");
+const passport = require("passport");
 
 
 logInRouter.get("/", (req, res, next) => {
-  res.render("log-in");
+  res.render("log-in", {
+    message: req.session.messages
+  });
 });
 
 function sanitizeFormInputs(req, res, next){
 
 }
 
-logInRouter.post("/", auth.passport.authenticate("local", {
+logInRouter.post("/", passport.authenticate("local", {
   successredirect: "/",
   failureredirect:"/log-in",
   failuremessage: true
 }));
 
-module.exports = {
-  logInRouter
-};
-// login router .post mw 
-// pass req, res, next to sanitization
-// pass to authorization mw
-// redirect to index
+module.exports = logInRouter;
