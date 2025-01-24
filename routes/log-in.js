@@ -3,10 +3,8 @@ const logInRouter = Router();
 const passport = require("passport");
 
 
-logInRouter.get("/", (req, res, next) => {
-  res.render("log-in", {
-    message: req.session.messages
-  });
+logInRouter.get("/", (req, res,) => {
+  res.render("log-in"); 
 });
 
 function sanitizeFormInputs(req, res, next){
@@ -14,9 +12,9 @@ function sanitizeFormInputs(req, res, next){
 }
 
 logInRouter.post("/", passport.authenticate("local", {
-  successredirect: "/",
-  failureredirect:"/log-in",
-  failuremessage: true
+  successRedirect: "/",
+  failureRedirect:"/log-in",
+  failureFlash: true
 }));
 
 module.exports = logInRouter;

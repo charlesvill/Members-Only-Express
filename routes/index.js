@@ -1,12 +1,11 @@
 const { Router } = require("express");
-const db = require("../db/queries.js");
 
 const indexRouter = Router();
 
 
-indexRouter.use("/", (req, res, next) => {
+indexRouter.use("/", (req, res) => {
   if (!req.user) {
-    res.render("log-in", {message: req.session.messages});
+    res.render("log-in");
   } else {
     res.render("index");
   }

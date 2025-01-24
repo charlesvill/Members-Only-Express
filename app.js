@@ -1,27 +1,37 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const passport = require("passport")
-const LocalStrategy = require("passport-local").Strategy;
+const flash = require("express-flash");
 
 const indexRouter = require("./routes/index.js");
 const signUpRouter = require("./routes/sign-up.js");
 const logInRouter = require("./routes/log-in.js");
+const db = require("./db/queries.js");
+
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 //serve static files
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
+app.use(express.urlencoded({ extended: true }));
 
-// enable .env variables
-require('dotenv').config();
+//import passport config and initialize
+const initializePassport = require('./authentication/passport-config.js');
+initializePassport(passport, db);
 
 //set up view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(flash());
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
@@ -29,44 +39,8 @@ app.use(session({
 }));
 
 // passport initialization
+app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.urlencoded({ extended: true }));
-
-passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await db.selectUserbyUsername(username);
-      const match = await bcrypt.compare(password, user.password);
-
-      if (!user) {
-        return done(null, false, { message: "Incorrect username" });
-      }
-
-      if (!match) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-
-      return done(null, user);
-
-    } catch (error) {
-      return done(error);
-    }
-  })
-)
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async(id, done) => {
-  try {
-    const user = db.selectUserbyId(id);
-
-    done(null, user.id);
-  } catch (error) {
-    done(error);
-  }
-});
 
 
 app.use("/sign-up", signUpRouter);

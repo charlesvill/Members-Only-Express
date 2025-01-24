@@ -10,12 +10,12 @@
         <%- include('./partials/header') %>
     </header>
     <main>
-        <span><%= message ? message : ""%></span>
+        <span><%= messages.error ? locals.messages.error : ""%></span>
         <form action="/log-in" method="POST">
             <label for="username">Username</label>
             <input type="text" name="username">
             <label for="password">Password</label>
-            <input type="password">
+            <input type="password" name="password">
             <button type="submit">Log in</button>
         </form>
         <div>

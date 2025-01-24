@@ -8,7 +8,7 @@ async function selectUserbyUsername(username) {
 }
 
 async function selectUserbyId(id) {
-  const { rows } = pool.query("SELECT * FROM users WHERE id = $1", [id]);
+  const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
   const user = rows[0];
 
   return user;

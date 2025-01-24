@@ -1,12 +1,15 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const { Router } = require("express");
 const signUpRouter = Router();
 const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
 
-require("dotenv").config();
 
 signUpRouter.get("/", (req, res, next) => {
-  res.render("sign-up", { message: req.session.messages });
+  res.render("sign-up");
 });
 
 signUpRouter.post("/", async (req, res, next) => {
@@ -21,7 +24,7 @@ signUpRouter.post("/", async (req, res, next) => {
 
   try {
     if (password !== confirmpass) {
-      req.session.messages = "Passwords do not match!";
+      req.flash('message', 'Passwords do not match!');
       res.redirect("/sign-up");
       return;
     }
@@ -45,7 +48,7 @@ signUpRouter.post("/", async (req, res, next) => {
         hashedPassword
       );
 
-      req.session.messages = "User Created Successful! Please Sign in";
+      req.flash('message', 'User created successful! Please sign in');
       res.redirect("/log-in");
     });
   } catch (error) {
