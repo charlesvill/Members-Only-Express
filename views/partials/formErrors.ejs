@@ -1,0 +1,7 @@
+<% if (locals.formErrors && Array.isArray(locals.formErrors)) { %>
+    <ul>
+      <% locals.formErrors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
+      <% }); %>
+    </ul>
+  <% } %>

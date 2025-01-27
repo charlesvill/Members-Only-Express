@@ -6,55 +6,67 @@ const { Router } = require("express");
 const signUpRouter = Router();
 const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
+const { signupValidation } = require("../validation/validation.js");
+const { validationResult } = require("express-validator");
 
+function validateSignupForm(req, res, next) {
 
-signUpRouter.get("/", (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log("we have errors in sign up", errors.array());
+    return res.status(400).render("sign-up", {
+      formErrors: errors.array()
+    });
+  }
+
+  next();
+}
+
+signUpRouter.get("/", (req, res) => {
   res.render("sign-up");
 });
 
-signUpRouter.post("/", async (req, res, next) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    password,
-    confirmpass,
-    secret
-  } = req.body;
+signUpRouter.post("/", [
+  signupValidation,
+  validateSignupForm,
+  async (req, res, next) => {
+    const {
+      firstname,
+      lastname,
+      username,
+      password,
+      secret
+    } = req.body;
 
-  try {
-    if (password !== confirmpass) {
-      req.flash('message', 'Passwords do not match!');
-      res.redirect("/sign-up");
-      return;
+    try {
+      bcrypt.hash(password, 10, async (err, hashedPassword) => {
+        if (err) {
+          return next(err);
+        }
+
+        const member = secret === process.env.MEMBER_SECRET
+          || secret === process.env.ADMIN_SECRET;
+        const admin = member && secret === process.env.ADMIN_SECRET;
+
+
+        await db.insertNewUser(
+          username,
+          firstname,
+          lastname,
+          member,
+          admin,
+          hashedPassword
+        );
+
+        req.flash('message', 'User created successful! Please sign in');
+        res.redirect("/log-in");
+      });
+    } catch (error) {
+
+      return next(error);
     }
-
-    bcrypt.hash(password, 10, async (err, hashedPassword) => {
-      if (err) {
-        return next(err);
-      }
-
-      const member = secret === process.env.MEMBER_SECRET
-        || secret === process.env.ADMIN_SECRET;
-      const admin = member && secret === process.env.ADMIN_SECRET;
-
-
-      await db.insertNewUser(
-        username,
-        firstname,
-        lastname,
-        member,
-        admin,
-        hashedPassword
-      );
-
-      req.flash('message', 'User created successful! Please sign in');
-      res.redirect("/log-in");
-    });
-  } catch (error) {
-
-    return next(error);
   }
-});
+
+]);
 
 module.exports = signUpRouter;

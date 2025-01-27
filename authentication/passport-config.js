@@ -7,10 +7,6 @@ function initialize(passport, db) {
       try {
         const user = await db.selectUserbyUsername(username);
 
-        console.log("user", user);
-        console.log("password", user.hash);
-        console.log("the local strat function is running!");
-
         if (!user) {
           return done(null, false, { message: "Incorrect username" });
         }
