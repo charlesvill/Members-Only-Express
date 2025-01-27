@@ -5,17 +5,16 @@ const lengthErr = "must be between 1 and 15 characters long";
 const passLengthErr = "must be at least 8 characters long";
 const passMatchErr = "passwords must match!";
 
-const emailValidator = body("username").notEmpty().trim().withMessage("Please enter your username");
+const usernameValidator = body("username").trim().notEmpty().withMessage("Please enter your username").isAlpha().withMessage(alphaErr);
 const passwordValidator = body("password")
-  .notEmpty()
   .trim()
+  .notEmpty()
   .isLength({ min: 8 })
   .withMessage(passLengthErr);
 
 
-
 const loginValidation = [
-  emailValidator,
+  usernameValidator,
   passwordValidator
 ];
 

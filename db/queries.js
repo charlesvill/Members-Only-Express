@@ -15,7 +15,6 @@ async function selectUserbyId(id) {
 }
 
 async function insertNewUser(...params) {
-
   const query = `
       INSERT INTO users (
         username, firstname, lastname, membership, admin, hash
@@ -25,10 +24,25 @@ async function insertNewUser(...params) {
 }
 
 
+async function insertPost(username, text, timestamp){
+  const user = await selectUserbyUsername(username);
+  const userId = user.id;
+  const query = `INSERT INTO posts (text, timestamp, user_id) VALUES ($1, $2, $3)`;
+  await pool.query(query, [text, timestamp, userId]);
+}
+
+async function selectAllMessages(){
+  const { rows } = await pool.query("SELECT * FROM posts");
+  
+  return rows;
+}
+
 module.exports = {
   selectUserbyUsername,
   selectUserbyId,
-  insertNewUser
+  insertNewUser,
+  insertPost,
+  selectAllMessages
 };
 
 
