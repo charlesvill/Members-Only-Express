@@ -34,7 +34,7 @@ function initialize(passport, db) {
       console.log("we are in the deserializer!", user);
 
 
-      done(null, user.id);
+      done(null, user);
     } catch (error) {
       done(error);
     }

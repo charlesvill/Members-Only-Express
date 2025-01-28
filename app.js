@@ -11,6 +11,7 @@ const flash = require("express-flash");
 const indexRouter = require("./routes/index.js");
 const signUpRouter = require("./routes/sign-up.js");
 const logInRouter = require("./routes/log-in.js");
+const addRouter = require("./routes/add.js");
 const db = require("./db/queries.js");
 
 
@@ -47,7 +48,10 @@ app.use("/sign-up", signUpRouter);
 
 app.use("/log-in", logInRouter);
 
+app.use("/add", addRouter);
+
 app.use("/", indexRouter);
+
 
 app.use((req, res, next) => {
   res.status(404).send("404: not found!");

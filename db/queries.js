@@ -24,11 +24,9 @@ async function insertNewUser(...params) {
 }
 
 
-async function insertPost(username, text, timestamp){
-  const user = await selectUserbyUsername(username);
-  const userId = user.id;
-  const query = `INSERT INTO posts (text, timestamp, user_id) VALUES ($1, $2, $3)`;
-  await pool.query(query, [text, timestamp, userId]);
+async function insertPost(userid, text){
+  const query = `INSERT INTO posts (text, timestamp, user_id) VALUES ($1, NOW(), $2)`;
+  await pool.query(query, [text, userid]);
 }
 
 async function selectAllMessages(){
