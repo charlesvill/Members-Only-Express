@@ -12,6 +12,7 @@ const indexRouter = require("./routes/index.js");
 const signUpRouter = require("./routes/sign-up.js");
 const logInRouter = require("./routes/log-in.js");
 const addRouter = require("./routes/add.js");
+const secretRouter = require("./routes/secret.js");
 const db = require("./db/queries.js");
 
 
@@ -50,7 +51,10 @@ app.use("/log-in", logInRouter);
 
 app.use("/add", addRouter);
 
+app.use("/secret", secretRouter);
+
 app.use("/", indexRouter);
+
 
 
 app.use((req, res, next) => {

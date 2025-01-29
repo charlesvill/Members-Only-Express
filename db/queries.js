@@ -35,12 +35,19 @@ async function selectAllMessages(){
   return rows;
 }
 
+async function updateMembership(id, member, admin){
+  const query = `UPDATE users SET membership = $1, admin = $2 WHERE id = $3`;
+
+  await pool.query(query, [member, admin, id]);
+}
+
 module.exports = {
   selectUserbyUsername,
   selectUserbyId,
   insertNewUser,
   insertPost,
-  selectAllMessages
+  selectAllMessages,
+  updateMembership
 };
 
 

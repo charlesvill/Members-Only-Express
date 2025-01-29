@@ -8,6 +8,7 @@ const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
 const { signupValidation } = require("../validation/validation.js");
 const { validationResult } = require("express-validator");
+const { checkMembership } = require("../utils/utils.js");
 
 function validateSignupForm(req, res, next) {
 
@@ -44,17 +45,16 @@ signUpRouter.post("/", [
           return next(err);
         }
 
-        const member = secret === process.env.MEMBER_SECRET
-          || secret === process.env.ADMIN_SECRET;
-        const admin = member && secret === process.env.ADMIN_SECRET;
-
+        const membership = checkMembership(secret); 
+        
+    
 
         await db.insertNewUser(
           username,
           firstname,
           lastname,
-          member,
-          admin,
+          membership.member,
+          membership.admin,
           hashedPassword
         );
 
