@@ -1,6 +1,10 @@
 <div>
    <% if(locals.user) {%>
     <h1><%= user.username%></h1>
+        <img src="<%= !user.membership ? '/person.png' : '/membership.png' %>">
+        <% if(user.admin === true) {%>
+            <img src="/starpin.png" alt="admin badge">
+        <% } %>
     <% } else { %>
         <h5>Please <a href="/log-in">sign in</a> to continue</h5>
     <% } %>
