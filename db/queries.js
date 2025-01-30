@@ -30,7 +30,7 @@ async function insertPost(userid, text){
 }
 
 async function selectAllMessages(){
-  const { rows } = await pool.query("SELECT * FROM posts");
+  const { rows } = await pool.query("SELECT users.id, text, timestamp, username, membership, admin FROM posts JOIN users ON posts.user_id = users.id");
   
   return rows;
 }

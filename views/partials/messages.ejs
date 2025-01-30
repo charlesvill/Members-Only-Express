@@ -1,5 +1,6 @@
 <% if(messages !== undefined && Array.isArray(messages)){ %>
     <% messages.forEach(msg => { %>
        <div><%= msg.text %></div>
+       <div><%= user.membership ? msg.username : "" %></div>
     <% }); %>
 <% } %>
