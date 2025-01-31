@@ -55,11 +55,11 @@ app.use("/secret", secretRouter);
 
 app.use("/", indexRouter);
 
-
-
 app.use((req, res, next) => {
+  console.log("no route was found, ", req.params);
   res.status(404).send("404: not found!");
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

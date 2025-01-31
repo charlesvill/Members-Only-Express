@@ -2,5 +2,8 @@
     <% messages.forEach(msg => { %>
        <div><%= msg.text %></div>
        <div><%= user.membership ? msg.username : "" %></div>
+       <form action="/delete/<%= msg.id %>" method="POST">
+        <button type="submit">delete</button>
+        </form>
     <% }); %>
 <% } %>
