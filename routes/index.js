@@ -22,7 +22,9 @@ indexRouter.get("/", async (req, res) => {
 indexRouter.post("/delete/:id", async (req, res) => {
   const postId = req.params.id;
 
-  console.log("we have order to delete post with id: ",  postId);
+  await db.deletePost(postId);
+
+  res.redirect("/");
 })
 
 

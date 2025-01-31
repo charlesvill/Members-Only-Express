@@ -41,13 +41,18 @@ async function updateMembership(id, member, admin){
   await pool.query(query, [member, admin, id]);
 }
 
+async function deletePost(id) {
+  await pool.query(`DELETE FROM posts WHERE id = $1`,[id]);
+}
+
 module.exports = {
   selectUserbyUsername,
   selectUserbyId,
   insertNewUser,
   insertPost,
   selectAllMessages,
-  updateMembership
+  updateMembership,
+  deletePost
 };
 
 
