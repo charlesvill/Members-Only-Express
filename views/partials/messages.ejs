@@ -1,9 +1,13 @@
 <% if(messages !== undefined && Array.isArray(messages)){ %>
     <% messages.forEach(msg => { %>
-       <div><%= msg.text %></div>
-       <div><%= user.membership ? msg.username : "" %></div>
-       <form action="/delete/<%= msg.id %>" method="POST">
-        <button type="submit">delete</button>
-        </form>
+      <div class="msgCont">
+        <div><%= msg.text %></div>
+        <div class="authorText"><%= user.membership ? msg.username : "" %></div>
+        <% if(user.admin) {%>
+          <form action="/delete/<%= msg.id %>" method="POST">
+              <button type="submit" class="deleteBtn">delete</button>
+          </form>
+        <% } %>
+      </div>
     <% }); %>
 <% } %>
