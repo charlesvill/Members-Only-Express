@@ -2,7 +2,11 @@
     <% messages.forEach(msg => { %>
       <div class="msgCont">
         <div><%= msg.text %></div>
-        <div class="authorText"><%= user.membership ? msg.username : "" %></div>
+        <div class="authorText">
+            <span><%= user.membership ? msg.username : "" %></span>
+            <span>posted: </span>
+
+        </div>
         <% if(user.admin) {%>
           <form action="/delete/<%= msg.id %>" method="POST">
               <button type="submit" class="deleteBtn">delete</button>

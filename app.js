@@ -11,6 +11,7 @@ const flash = require("express-flash");
 const indexRouter = require("./routes/index.js");
 const signUpRouter = require("./routes/sign-up.js");
 const logInRouter = require("./routes/log-in.js");
+const logoutRouter = require("./routes/log-out.js");
 const addRouter = require("./routes/add.js");
 const secretRouter = require("./routes/secret.js");
 const db = require("./db/queries.js");
@@ -48,6 +49,8 @@ app.use(passport.session());
 app.use("/sign-up", signUpRouter);
 
 app.use("/log-in", logInRouter);
+
+app.use("/log-out", logoutRouter);
 
 app.use("/add", addRouter);
 

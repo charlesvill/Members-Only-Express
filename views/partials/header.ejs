@@ -7,6 +7,9 @@
             <% if(user.admin === true) {%>
                 <img src="/starpin.png" alt="admin badge" class="admin badge">
             <% } %>
+                <form action="/log-out" method="post">
+                    <button type="submit" class="logOutBtn">log out</button>
+                </form>
         <% } else { %>
             <h5>Please <a href="/log-in">sign in</a> to continue</h5>
         <% } %>

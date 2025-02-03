@@ -3,8 +3,11 @@
   /* --foreground: #4C5270; */
   --accent: #f3cd74;
   --message: #c7f954;
-  --badge-size: 1.2rem;
   --black: #0e050f;
+  --site-max-width: clamp(500px, 100%, 1280px);
+  --message-base-width: 16rem;
+  --form-base-width: 20rem;
+  --badge-size: 1.2rem;
 }
 
 
@@ -20,7 +23,9 @@ a {
 }
 
 /* Header */
-
+header {
+  width: var(--site-max-width);
+}
 header h1 {
   color: var(--accent);
 }
@@ -41,6 +46,14 @@ header .greetingCont {
   align-items: center;
 }
 
+header .logOutBtn {
+  opacity: 0%;
+}
+
+header .greetingCont:hover > form > button {
+  opacity: 100%;
+}
+
 header img {
   height: var(--badge-size);
   width: auto;
@@ -49,9 +62,11 @@ header img {
 /* main content */
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 70%;
+  width: var(--site-max-width);
 }
 
 main .threadCont {
@@ -60,10 +75,13 @@ main .threadCont {
   align-items: center;
   justify-content: center;
   background-color: var(--black);
+  border-radius: 15px;
   width: 80%;
 }
 
 main .msgCont {
+  flex: 1;
+  min-width: var(--message-base-width);
   padding: .5rem;
   background-color: var(--message);
   border-radius: 15px;
@@ -71,17 +89,26 @@ main .msgCont {
   color: var(--black);
 }
 
+main .authorText {
+  display: flex;
+  flex-direction: column;
+  margin-top: .3rem;
+  color: darkgray;
+  align-items: flex-end;
+}
+
 main .deleteBtn {
   opacity: 0%;
 }
 
-main .deleteBtn:hover {
+.msgCont:hover > form > button {
   opacity: 100%;
+  cursor: pointer;
+  background-color: red;
+  border-radius: 5px;
 }
 
 main .plusBtn {
-  height: 2rem;
-  width: 2rem;
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
@@ -91,6 +118,32 @@ main .plusBtn:hover {
   background-color: var(--accent);
   border-radius: 30px;
 }
+
+main .form {
+  display: flex;
+  flex-direction: column;
+  min-width: var(--form-base-width);
+  gap: 1rem;
+  background-color: var(--accent);
+  border-radius: 12px;
+  padding: 2rem;
+  color: var(--black);
+}
+
+main .wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+main .errList {
+  color: red;
+  list-style: none;
+  background-color: var(--black);
+  border-radius: 5px;
+  padding: .5rem;
+}
+
+
 
 /* footer */
 

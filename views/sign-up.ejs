@@ -15,19 +15,32 @@
 
         <%- include('./partials/formErrors') %>
 
-        <form action="/sign-up" method="POST">
-            <label for="firstname">First Name</label>
-            <input type="text" name="firstname">
-            <label for="lastname">Last Name</label>
-            <input type="text" name="lastname">
-            <label for="username">Username</label>
-            <input type="text" name="username">
-            <label for="password">Password</label>
-            <input type="password" name="password">
-            <label for="confirmpass">Confirm Password</label>
-            <input type="password" name="confirmpass">
-            <label for="secret">Secret code?</label>
-            <input type="password" name="secret">
+        <form action="/sign-up" method="POST" class="signup form">
+            <div class="wrapper">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname">
+            </div>
+            <div class="wrapper">
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastname">
+            </div>
+            <div class="wrapper">
+                <label for="username">Username</label>
+                <input type="text" name="username">
+            </div>
+            <div class="wrapper">
+                <label for="secret">Secret code?</label>
+                <input type="password" name="secret">
+            </div>
+            <div class="wrapper">
+                <label for="password">Password</label>
+                <input type="password" name="password">
+            </div>
+            <div class="wrapper">
+                <label for="confirmpass">Confirm Password</label>
+                <input type="password" name="confirmpass">
+            </div>
+
             <button type="submit">Sign Up</button>
         </form>
     </main>
